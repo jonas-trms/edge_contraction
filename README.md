@@ -37,7 +37,7 @@ Arguments: initial mesh path, simplified mesh path, _k_, _crep_ (_cf. [Mesh opti
 
 Example :
 ```
-$ ./energy head.obj head_reduced.obj 0 0
+$ ./energy head.obj head_reduced.obj 0. 0.
 ```
 
 # Example
