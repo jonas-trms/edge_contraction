@@ -68,7 +68,7 @@ The `.obj` files must be formated in a specific way. The first line should be th
 Then, the file should only contain the vertex positions and the faces. Faces must be triplets of integers. For the line breaks, see the example.
 
 Example of a formated file:
-```
+```obj
 #8 vertices; 12 faces
 
 v -10.000000 -10.000000 -10.000000
