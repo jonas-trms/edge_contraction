@@ -10,13 +10,13 @@ The execution is quite slow, but this algorithm has the advantage of preserving 
 # Execution
 Meshes must be in obj format
 
-**main.c** : reduces a mesh \
-Compilation : with all files except in-out_energy.c \
-Arguments : input path, output path, desired reduction factor
+**main.c**: reduces a mesh \
+Compilation: with all files except in-out_energy.c \
+Arguments: input path, output path, desired reduction factor
 
-**energy.c** : computes the error (a float value) between a mesh and one of its simplifications \
-Compilation : with all files except in-out.c \
-Arguments : initial mesh path, simplified mesh path
+**energy.c**: computes the error (a float value) between a mesh and one of its simplifications \
+Compilation: with all files except in-out.c \
+Arguments: initial mesh path, simplified mesh path
 
 # Example
 ![](https://i.imgur.com/c4XOg8p.png) ![](https://i.imgur.com/z7ff6Wx.png) \
