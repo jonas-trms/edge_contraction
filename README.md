@@ -62,8 +62,8 @@ The algorithm only supports triangular meshes and this implementation expects `.
   ```
 
 ## Format
-The `.obj` files must be formatted in a specific way. The first line should be the following comment :
-```#n vertices; m faces```
+The `.obj` files must be formatted in a specific way. The first line should be the following comment:
+```#n vertices; m faces```.
 
 Then, the file should only contain the vertex positions and the faces. Faces must be triplets of integers. For the line breaks, see the example.
 
