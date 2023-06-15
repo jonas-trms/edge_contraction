@@ -41,9 +41,9 @@ $ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operati
 # Usage
 The algorithm only supports triangular meshes and this implementation expects `.obj` files formated in a specific way (view `Format`). There are two commands:
 * `./main [args]` reduces the provided mesh using the described algorithm. Arguments:
-  * `initial` is the path to the `.obj` file to be reduced
-  * `reduction` is the path to the reduced `.obj` file
-  * `factor` is the desired reduction factor
+  * `initial` is the path to the `.obj` file to be reduced.
+  * `reduction` is the path to the reduced `.obj` file.
+  * `factor` is a `float` value and is equal to the desired reduction factor.
 
   Example:
   ```
@@ -51,10 +51,10 @@ The algorithm only supports triangular meshes and this implementation expects `.
   ```
 
 * `./energy [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
-  * `initial` is the path to the initial `.obj` file
-  * `reduction` is the path to the reduced `.obj` file
-  * `k` is a float value and defines how much smoothness imports to the quality of a reduction
-  * `_crep_` is a float value and defines the balance between the importances of a low number of vertices and of a matching surface
+  * `initial` is the path to the initial `.obj` file.
+  * `reduction` is the path to the reduced `.obj` file.
+  * `k` is a `float` value and defines how much smoothness imports to the quality of a reduction.
+  * `_crep_` is a `float` value and defines the balance between the importances of a low number of vertices and of a matching surface.
 
   Example:
   ```
