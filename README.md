@@ -39,7 +39,7 @@ $ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operati
 ```
 
 ## Usage
-The algorithm only supports triangular meshes and this implementation expects `.obj` files formated in a specific way (see [Format](#format)). There are two commands:
+The algorithm only supports triangular meshes and this implementation expects `.obj` files formatted in a specific way (see [Format](#format)). There are two commands:
 * `./main [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
   * `reduction` is the path to the reduced `.obj` file.
@@ -62,12 +62,12 @@ The algorithm only supports triangular meshes and this implementation expects `.
   ```
 
 ## Format
-The `.obj` files must be formated in a specific way. The first line should be the following comment :
+The `.obj` files must be formatted in a specific way. The first line should be the following comment :
 ```#n vertices; m faces```
 
 Then, the file should only contain the vertex positions and the faces. Faces must be triplets of integers. For the line breaks, see the example.
 
-Example of a formated file:
+Example of a formatted file:
 ```obj
 #8 vertices; 12 faces
 
