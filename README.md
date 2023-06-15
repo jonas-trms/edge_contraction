@@ -1,5 +1,5 @@
 # A mesh simplification algorithm based on iterative edge contraction
-![initial mesh](https://i.imgur.com/c4XOg8p.png) ![reduced mesh](https://i.imgur.com/z7ff6Wx.png)
+![initial mesh](https://i.imgur.com/HXTQ9VP.png) ![reduced mesh](https://i.imgur.com/Fwm0GuE.png)
 
 This algorithm is based on the paper [_Mesh optimization_](https://doi.org/10.1145/166117.166119) by H. Hoppe, T. Derose, T. Duchamp, J. McDonald, W. Stuetzle.
 
