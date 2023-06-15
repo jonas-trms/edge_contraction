@@ -3,7 +3,8 @@ This algorithm is based on the paper _Mesh optimization_ by H.HOPPE, T.DEROSE, T
 
 Edges are chosen successively and their incident vertices are merged, so as to minimize an energy function.
 
-The implementation is still being worked on, the energy function not being used yet. Edges are therefore randomly collapsed, until the desired reduction factor is reached. \
+The implementation is still being worked on, the energy function not being used yet. Edges are therefore randomly collapsed, until the desired reduction factor is reached.
+
 The execution is quite slow, but this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unused energy function.
 
 # Execution
