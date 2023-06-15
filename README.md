@@ -29,7 +29,7 @@ Edges are then randomly chosen, and random operations are performed on them. An 
 ## Implementation
 The implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
 
-The execution is quite slow, and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
+The execution is quite slow and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
  ## Compilation
  You can compile with GCC by running the following commands:
