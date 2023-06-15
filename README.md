@@ -3,42 +3,42 @@
 
 This algorithm is based on the paper [_Mesh optimization_](https://doi.org/10.1145/166117.166119) by H. Hoppe, T. Derose, T. Duchamp, J. McDonald, W. Stuetzle.
 
-# Principle
+## Principle
 Operations are iteratively performed on edges, so as to minimize an energy function measuring the distance between the initial mesh and the reduced one. 
 
-## Edge operations
-For a chosen edge, three operations are allowed:
+### Edge operations
+For a chosen edge, three operations are allowed: an edge can be collapsed, rotated or split.
 
-### Edge collapse
+#### Edge collapse
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![collapse operation](https://i.imgur.com/srvrpOq.png) \
-This operation is the one useful for the reduction of the mesh, properly speaking, because it reduces the number of vertices.
+This operation is the one that actually reduces the mesh, as it reduces the number of vertices.
 
-### Edge pivot
+#### Edge rotate
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![pivot operation](https://i.imgur.com/pD7kvtz.png) \
 This operation helps matching the original mesh.
 
-### Edge split
+#### Edge split
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![vertex creation](https://i.imgur.com/io3a8Ot.png) \
-This operation prevents the appearance of sharp spikes, and help matching the original mesh.
+This operation prevents the appearance of sharp spikes, and helps matching the original mesh.
 
-## Global algorithm
+### Global algorithm
 After an edge operation, vertex positions are tweaked so that the reduction's surface matches the initial one as much as possible.
 
 Edges are then randomly chosen, and random operations are performed on them. An operation is kept if it makes the energy decrease. This process goes on until the energy function, or the reduction factor, reaches a chosen threshold.
 
-# Implementation
+## Implementation
 The current implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
 
 The execution is quite slow, and could be fastened using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
- # Compilation
+ ## Compilation
  You can compile with GCC by running the following commands:
 ```
 $ gcc -o main main.c access_operations.c comparison.c conditions_tests.c edge_operations.c in-out.c linked_lists.c remove_operations.c -lm
 $ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operations.c in-out_energy.c linked_lists.c projection.c remove_operations.c -lm
 ```
 
-# Usage
+## Usage
 The algorithm only supports triangular meshes and this implementation expects `.obj` files formated in a specific way (view `Format`). There are two commands:
 * `./main [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
@@ -61,7 +61,7 @@ The algorithm only supports triangular meshes and this implementation expects `.
   $ ./energy head.obj head_reduced.obj 0. 0.
   ```
 
-# Format
+## Format
 The `.obj` files must be formated in a specific way. The first line should be the following comment :
 ```#n vertices; m faces```
 
