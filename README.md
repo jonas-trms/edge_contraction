@@ -18,7 +18,7 @@ $ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operati
 ```
 
 # Execution
-Meshes must be in OBJ format
+Meshes must be in OBJ format.
 
 ## main.c
 Reduces a mesh.
