@@ -13,7 +13,7 @@ For a chosen edge, three operations are allowed: an edge can be collapsed, rotat
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![collapse operation](https://i.imgur.com/srvrpOq.png) \
 This operation is the one that actually reduces the mesh, as it reduces the number of vertices.
 
-#### Edge rotate
+#### Edge rotation
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![pivot operation](https://i.imgur.com/pD7kvtz.png) \
 This operation helps matching the original mesh.
 
