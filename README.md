@@ -27,9 +27,9 @@ After an edge operation, vertex positions are tweaked so that the reduction's su
 Edges are then randomly chosen, and random operations are performed on them. An operation is kept if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
 ## Implementation
-The current implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
+The implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
 
-The execution is quite slow, and could be fastened using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
+The execution is quite slow, and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
  ## Compilation
  You can compile with GCC by running the following commands:
