@@ -39,7 +39,7 @@ $ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operati
 ```
 
 ## Usage
-The algorithm only supports triangular meshes and this implementation expects `.obj` files formated in a specific way (view `Format`). There are two commands:
+The algorithm only supports triangular meshes and this implementation expects `.obj` files formated in a specific way (see [Format](#format)). There are two commands:
 * `./main [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
   * `reduction` is the path to the reduced `.obj` file.
