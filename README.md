@@ -11,7 +11,7 @@ For a chosen edge, three operations are allowed:
 
 ### Edge collapse
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![collapse operation](https://i.imgur.com/srvrpOq.png) \
-This operation is useful for the proper reduction of the mesh, because it reduces the number of vertices.
+This operation is the one useful for the reduction of the mesh, properly speaking, because it reduces the number of vertices.
 
 ### Edge pivot
 ![initial situation](https://i.imgur.com/GUarpWn.png) ![pivot operation](https://i.imgur.com/pD7kvtz.png) \
