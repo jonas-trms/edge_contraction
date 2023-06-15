@@ -27,7 +27,7 @@ Arguments: input path, output path, desired reduction factor.
 
 Example :
 ```
-$ ./main head.obj head_reduced.obj 2
+$ ./main head.obj head_reduced.obj 2.
 ```
 
 ## energy.c
