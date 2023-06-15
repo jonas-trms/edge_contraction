@@ -93,3 +93,5 @@ f 4 3 8
 f 2 6 7
 f 2 3 7
 ```
+## Attributions
+The images of the edge operations come from [_Mesh optimization_](https://doi.org/10.1145/166117.166119).
