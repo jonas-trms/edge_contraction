@@ -1,5 +1,5 @@
 # A mesh simplification algorithm based on iterative edge contraction
-This algorithm is based on the paper [_Mesh optimization_](https://doi.org/10.1145/166117.166119) by H.Hoppe, T.Derose, T.Duchamp, J.McDonald, W.Stuetzle.
+This algorithm is based on the paper [_Mesh optimization_](https://doi.org/10.1145/166117.166119) by H. Hoppe, T. Derose, T. Duchamp, J. McDonald, W. Stuetzle.
 
 Edges are chosen successively and their incident vertices are merged, so as to minimize an energy function.
 
