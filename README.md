@@ -25,7 +25,7 @@ Reduces a mesh.
 
 Arguments: input path, output path, desired reduction factor.
 
-Example :
+Example:
 ```
 $ ./main head.obj head_reduced.obj 2.
 ```
@@ -35,7 +35,7 @@ Computes the error (a float value) between a mesh and one of its simplifications
 
 Arguments: initial mesh path, simplified mesh path, _k_, _crep_ (_cf. [Mesh optimization](https://doi.org/10.1145/166117.166119)_).
 
-Example :
+Example:
 ```
 $ ./energy head.obj head_reduced.obj 0. 0.
 ```
