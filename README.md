@@ -34,8 +34,8 @@ The execution is quite slow and could be accelerated using heuristics. Neverthel
  ## Compilation
  You can compile with GCC by running the following commands:
 ```
-$ gcc -o main main.c access_operations.c comparison.c conditions_tests.c edge_operations.c in-out.c linked_lists.c remove_operations.c -lm
-$ gcc -o energy access_operations.c comparison.c conditions_tests.c edge_operations.c in-out_energy.c linked_lists.c projection.c remove_operations.c -lm
+$ gcc -o main src/main.c src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
+$ gcc -o energy src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/projection.c src/remove_operations.c -lm
 ```
 
 ## Usage
