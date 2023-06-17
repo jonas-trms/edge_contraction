@@ -53,8 +53,8 @@ The algorithm only supports triangular meshes and this implementation expects `.
 * `./error [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
   * `initial` is the path to the initial `.obj` file.
   * `reduction` is the path to the reduced `.obj` file.
-  * `k` is a `float` value and defines the importance of smoothness to the quality of the reduction.
-  * `crep` is a `float` value and defines the balance between the importance of a low number of vertices and of a faithful surface.
+  * `k` is a `float` value and defines the importance of smoothness to the quality of the reduction. A higher value means that smoothness is more important.
+  * `crep` is a `float` value and defines the balance between the importance of a low number of vertices and of a faithful surface. A higher value means that the former is more important.
 
   Example:
   ```
