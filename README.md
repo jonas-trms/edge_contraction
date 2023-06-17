@@ -47,7 +47,7 @@ The algorithm only supports triangular meshes and this implementation expects `.
 
   Example:
   ```
-  $ ./main head.obj head_reduced.obj 2.
+  $ ./edge_contraction head.obj head_reduced.obj 2.
   ```
 
 * `./error [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
@@ -58,7 +58,7 @@ The algorithm only supports triangular meshes and this implementation expects `.
 
   Example:
   ```
-  $ ./energy head.obj head_reduced.obj 0. 0.
+  $ ./error head.obj head_reduced.obj 0. 0.
   ```
 
 ## Format
