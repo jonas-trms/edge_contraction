@@ -34,13 +34,13 @@ The execution is quite slow and could be accelerated using heuristics. Neverthel
  ## Compilation
  You can compile with GCC by running the following commands:
 ```
-$ gcc -o main src/main.c src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
-$ gcc -o energy src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/projection.c src/remove_operations.c -lm
+$ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
+$ gcc -o error src/access_operations.c src/comparison.c src/conditions_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/projection.c src/remove_operations.c -lm
 ```
 
 ## Usage
 The algorithm only supports triangular meshes and this implementation expects `.obj` files formatted in a specific way (see [Format](#format)). There are two commands:
-* `./main [args]` reduces the provided mesh using the described algorithm. Arguments:
+* `./edge_contraction [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
   * `reduction` is the path to the reduced `.obj` file.
   * `factor` is a `float` value and is equal to the desired reduction factor.
@@ -50,7 +50,7 @@ The algorithm only supports triangular meshes and this implementation expects `.
   $ ./main head.obj head_reduced.obj 2.
   ```
 
-* `./energy [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
+* `./error [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
   * `initial` is the path to the initial `.obj` file.
   * `reduction` is the path to the reduced `.obj` file.
   * `k` is a `float` value and defines the importance of smoothness to the quality of the reduction.
