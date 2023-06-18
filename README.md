@@ -24,7 +24,7 @@ This operation prevents the appearance of sharp spikes, and helps matching the o
 ### Global algorithm
 After an edge operation, vertex positions are tweaked so that the reduction's surface matches the initial one as much as possible.
 
-It's then possible to define the global principle of the algorithm : edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
+It's then possible to define the global principle of the algorithm: edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
 ## Implementation
 The implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
