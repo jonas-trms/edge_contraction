@@ -24,7 +24,7 @@ This operation prevents the appearance of sharp spikes, and helps matching the o
 ### Global algorithm
 After an edge operation, vertex positions are tweaked so that the reduction's surface matches the initial one as much as possible.
 
-Edges are then randomly chosen, and random operations are performed on them. An operation is kept if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
+It's then possible to define the global principle of the algorithm : edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
 ## Implementation
 The implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
@@ -43,7 +43,7 @@ The algorithm only supports triangular meshes and this implementation expects `.
 * `./edge_contraction [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
   * `reduction` is the path to the reduced `.obj` file.
-  * `factor` is a `float` value and is equal to the desired reduction factor.
+  * `factor` is a `float` value equal to the desired reduction factor.
 
   Example:
   ```
