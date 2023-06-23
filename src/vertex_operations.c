@@ -3,9 +3,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "projection.h"
+#include "vertex_operations.h"
+#include "matrix.h"
 
-// projection
+// basic operations on static vertices (vectors)
+vertex_static *v_to_static(vertex *v) {
+  vertex_static *res = malloc(sizeof(vertex_static));
+  res->x = v->x;
+  res->y = v->y;
+  res->z = v->z;
+
+  return res;
+}
+
 vertex_static *sum_v(vertex_static *v1, vertex_static *v2) {
   // v1 + v2
   vertex_static *res = malloc(sizeof(vertex_static));
@@ -40,6 +50,7 @@ double dot(vertex_static *v1, vertex_static *v2) {
   return (v1->x) * (v2->x) + (v1->y) * (v2->y) + (v1->z) * (v2->z);
 }
 
+//closest point on a face to a point
 vertex_static *closest_point_face(vertex_static *p, vertex_static *a,
                                   vertex_static *b, vertex_static *c) {
   vertex_static *ab = substraction_v(b, a);
@@ -141,13 +152,34 @@ vertex_static *closest_point_face(vertex_static *p, vertex_static *a,
   return res; // #0
 }
 
-vertex_static *v_to_static(vertex *v) {
-  vertex_static *res = malloc(sizeof(vertex_static));
-  res->x = v->x;
-  res->y = v->y;
-  res->z = v->z;
 
-  return res;
+//barycentric coordinates of a point in a triangle
+void barycentric_calc(vertex_static *p, vertex_static *a, vertex_static *b, vertex_static *c, int *k_a, int *k_b, int *k_c){
+  //p = k_a*a + k_b*b + k_c*c
+  //the function modifies k_a, k_b and k_c
+  
+  MATRIX_TYPE tab_abc[3][3] = {a->x, a->y, a->z, 
+                                  b->x, b->y, b->z,
+                                  c->x, c->y, c->z};
+  Matrix *mat_abc = Matrix_gen(3, 3, tab_abc);
+  free(tab_abc);
+
+  Matrix *mat_abc_inverse = M_inverse(mat_abc);
+  M_free(mat_abc);
+
+  MATRIX_TYPE tab_p[3] = {p->x, p->y, p->z};
+  Matrix *mat_p = Matrix_gen(3, 1, tab_res);
+  free(tab_res);
+
+  Matrix *res = M_mul(mat_abc_inverse, mat_p);
+  M_free(mat_abc_inverse);
+  M_free(mat_p);
+
+  *k_a = (res->data)[0];
+  *k_b = (res->data)[1];
+  *k_c = (res->data)[2];
+
+  M_free(res);
 }
 
 double square_dist_v(vertex_static *v1, vertex_static *v2) {
