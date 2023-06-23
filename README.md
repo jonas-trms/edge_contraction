@@ -95,4 +95,5 @@ f 2 3 7
 ```
 ## Attributions
 The library [Matrix_hub](https://github.com/Amoiensis/Matrix_hub) is used in this project, under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
 The images of the edge operations come from [_Mesh optimization_](https://doi.org/10.1145/166117.166119).
