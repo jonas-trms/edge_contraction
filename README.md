@@ -35,7 +35,7 @@ The execution is quite slow and could be accelerated using heuristics. Neverthel
  You can compile with GCC by running the following commands:
 ```
 $ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
-$ gcc -o error src/energy.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/projection.c src/remove_operations.c -lm
+$ gcc -o error src/energy_standalone.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/vertex_operations.c src/remove_operations.c -lm
 ```
 
 ## Usage

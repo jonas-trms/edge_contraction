@@ -1,7 +1,7 @@
 #ifndef DATA_STRUCTURES
 #define DATA_STRUCTURES
 
-// static mesh
+// original mesh
 struct vertex_static {
   double x;
   double y;

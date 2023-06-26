@@ -6,7 +6,18 @@
 #include "vertex_operations.h"
 #include "matrix.h"
 
-// basic operations on static vertices (vectors)
+// basic operations on static vertices (seen as vectors)
+void coord_copy(vertex_static *v1, vertex_static *v2){
+  //copies the coords of v1 to v2
+  if (v1 == NULL || v2 == NULL){
+    printf("Error coord_copy : NULL vector\n");
+  }
+
+  v2->x = v1->x;
+  v2->y = v1->y;
+  v2->z = v1->z;
+}
+
 vertex_static *v_to_static(vertex *v) {
   vertex_static *res = malloc(sizeof(vertex_static));
   res->x = v->x;
@@ -158,18 +169,16 @@ void barycentric_calc(vertex_static *p, vertex_static *a, vertex_static *b, vert
   //p = k_a*a + k_b*b + k_c*c
   //the function modifies k_a, k_b and k_c
   
-  MATRIX_TYPE tab_abc[3][3] = {a->x, a->y, a->z, 
+  MATRIX_TYPE tab_abc[9] = {a->x, a->y, a->z, 
                                   b->x, b->y, b->z,
                                   c->x, c->y, c->z};
   Matrix *mat_abc = Matrix_gen(3, 3, tab_abc);
-  free(tab_abc);
 
-  Matrix *mat_abc_inverse = M_inverse(mat_abc);
+  Matrix *mat_abc_inverse = M_Inverse(mat_abc);
   M_free(mat_abc);
 
   MATRIX_TYPE tab_p[3] = {p->x, p->y, p->z};
-  Matrix *mat_p = Matrix_gen(3, 1, tab_res);
-  free(tab_res);
+  Matrix *mat_p = Matrix_gen(3, 1, tab_p);
 
   Matrix *res = M_mul(mat_abc_inverse, mat_p);
   M_free(mat_abc_inverse);
@@ -182,6 +191,7 @@ void barycentric_calc(vertex_static *p, vertex_static *a, vertex_static *b, vert
   M_free(res);
 }
 
+//square distances calculations
 double square_dist_v(vertex_static *v1, vertex_static *v2) {
   vertex_static *v1v2 = substraction_v(v2, v1);
 
@@ -191,12 +201,15 @@ double square_dist_v(vertex_static *v1, vertex_static *v2) {
   return dist;
 }
 
-double square_dist_v_f(vertex_static *v, face *f) {
+double square_dist_v_f(vertex_static *v, face *f, vertex_static *p_copy) {
   vertex_static *a = v_to_static(f->a);
   vertex_static *b = v_to_static(f->b);
   vertex_static *c = v_to_static(f->c);
 
   vertex_static *p = closest_point_face(v, a, b, c);
+  if (p_copy != NULL){
+    coord_copy(p, p_copy);
+  }
 
   double dist = square_dist_v(v, p);
 
@@ -209,3 +222,24 @@ double square_dist_v_f(vertex_static *v, face *f) {
 
   return dist;
 }
+
+//projection subproblem
+void projection(vertex_static **original_vertices, int original_size, vertex_static *barycenters,
+face **faces, int face_nb){
+  vertex_static v_tmp;
+  for (int i = 0; i < original_size; i++) {
+    double dist_curr = square_dist_v_f(original_vertices[i], faces[0], &barycenters[i]);
+
+    for (int j = 1; j < face_nb; j++) {
+      double tmp = square_dist_v_f(original_vertices[i], faces[j], &v_tmp);
+
+      if (tmp < dist_curr) {
+        dist_curr = tmp;
+        coord_copy(&v_tmp, &barycenters[i]);
+      }
+    }
+  }
+}
+
+int main(void){}
+
