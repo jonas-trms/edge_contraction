@@ -27,7 +27,7 @@ After an edge operation, vertex positions are tweaked so that the reduction's su
 It's then possible to define the global principle of the algorithm: edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
 ## Implementation
-The implementation is still being worked on, operations on vertex positions not being implemented yet. The energy function is therefore useless, because it never decreases. Consequently, edges are randomly collapsed, until the desired reduction factor is reached.
+This implementation is still being worked on, the operations on vertex positions being currently implemented using the librairies `OpenBLAS` and `LAPACKE`. There is currently a problem with these operations, because `LAPACKE` solves the linear least squares subproblem using the wrong matrix norm. A new computation using the conjugate gradient method is to be implemented.
 
 The execution is quite slow and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
@@ -40,8 +40,7 @@ $ sudo apt install libopenblas-dev liblapacke-dev
 
 You can then compile with `gcc` by running the following commands:
 ```
-$ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm -llapacke -lopenblas
-$ gcc -o error src/energy_standalone.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/vertex_operations.c src/remove_operations.c -lm -llapacke -lopenblas
+$ gcc -o edge_contraction src/main.c src/!(main).c -lm -llapacke -lopenblas
 ```
 
 ## Usage
@@ -49,23 +48,11 @@ The algorithm only supports triangular meshes and this implementation expects `.
 * `./edge_contraction [args]` reduces the provided mesh using the described algorithm. Arguments:
   * `initial` is the path to the `.obj` file to be reduced.
   * `reduction` is the path to the reduced `.obj` file.
-  * `factor` is a `float` value equal to the desired reduction factor.
-
-  Example:
-  ```
-  $ ./edge_contraction head.obj head_reduced.obj 2.
-  ```
-
-* `./error [args]` computes and prints the error (a float value) of a mesh's reduction. Arguments:
-  * `initial` is the path to the initial `.obj` file.
-  * `reduction` is the path to the reduced `.obj` file.
   * `k` is a `float` value and defines the importance of smoothness to the quality of the reduction. A higher value means that smoothness is more important.
   * `crep` is a `float` value and defines the balance between the importance of a low number of vertices and of a faithful surface. A higher value means that the former is more important.
+  * `iter_nb` is an int value equal to the number of edge operations to be performed
+  * `subproblem_iter` is an int value and defines the precision of the vertices adjustement after an edge operation
 
-  Example:
-  ```
-  $ ./error head.obj head_reduced.obj 0. 0.
-  ```
 
 ## Format
 The `.obj` files must be formatted in a specific way. The first line should be the following comment:
