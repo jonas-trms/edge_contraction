@@ -34,7 +34,7 @@ For now, without these vertex operations, the energy function is basically usele
 The execution is quite slow and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
  ## Compilation
- You can compile with GCC by running the following commands:
+ You can compile with `gcc` by running the following commands:
 ```
 $ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
 $ gcc -o error src/energy.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/projection.c src/remove_operations.c -lm
