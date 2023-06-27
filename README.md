@@ -22,7 +22,7 @@ This operation helps matching the original mesh.
 This operation prevents the appearance of sharp spikes, and helps matching the original mesh.
 
 ### Global algorithm
-After an edge operation, vertex positions are tweaked so that the reduction's surface matches the initial one as much as possible.
+After an edge operation, vertex positions are tweaked so that the reduction's surface matches the initial one as much as possible. Optimal positions can be computed using the linear least squares method.
 
 It's then possible to define the global principle of the algorithm: edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
@@ -38,7 +38,7 @@ $ sudo apt update
 $ sudo apt install libopenblas-dev liblapacke-dev
 ```
 
-You can then compile with `gcc` by running the following commands:
+You can then compile with `gcc` by running the following command:
 ```
 $ gcc -o edge_contraction src/main.c src/!(main).c -lm -llapacke -lopenblas
 ```
