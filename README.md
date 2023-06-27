@@ -27,7 +27,7 @@ After an edge operation, vertex positions are tweaked so that the reduction's su
 It's then possible to define the global principle of the algorithm: edges are randomly chosen, and random operations are performed on them. An operation is kept only if it makes the energy decrease. This process goes on until the energy function or the reduction factor reaches a chosen threshold.
 
 ## Implementation
-This implementation is still being worked on, the operations on vertex positions being currently implemented using the librairies `OpenBLAS` and `LAPACKE`. There is currently a problem with these operations, because `LAPACKE` solves the linear least squares subproblem using the wrong matrix norm. A new computation using the conjugate gradient method is to be implemented.
+This implementation is still being worked on, the operations on vertex positions being currently implemented using the librairies `OpenBLAS` and `LAPACKE`. There is currently a problem with these operations, because `LAPACKE` solves the linear least squares subproblem using the wrong matrix norm, providing therefore bad positions for vertices. A new computation using the conjugate gradient method is to be implemented.
 
 The execution is quite slow and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
