@@ -1,16 +1,12 @@
-#ifndef PROJECTION
-#define PROJECTION
+#ifndef VERTEX_OPERATIONS
+#define VERTEX_OPERATIONS
 
-#include "access_operations.h"
+#include "distance_operations.h"
 
-/* vertex_static *sum_v(vertex_static *v1, vertex_static *v2);
-vertex_static *substraction_v(vertex_static *v1, vertex_static *v2);
-vertex_static *scalar_v(double k, vertex_static *v1);
-double dot(vertex_static *v1, vertex_static *v2);
-vertex_static *closest_point_face(vertex_static *p, vertex_static *a,
-                                  vertex_static *b, vertex_static *c);
-vertex_static *v_to_static(vertex *v);
-double square_dist_v(vertex_static *v1, vertex_static *v2);
-double square_dist_v_f(vertex_static *v, face *f); */
+void project_points(double *original_vertices, int original_size, barycenter_node *barycenters,
+face **faces, int face_nb);
+
+void improve_vertex_positions(double *original_vertices, int original_size, barycenter_node *barycenters,
+vertex **vertices, int vertex_nb, edge **edges, int edge_nb, int k);
 
 #endif

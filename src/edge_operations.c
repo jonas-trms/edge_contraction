@@ -6,14 +6,6 @@
 #include "edge_operations.h"
 
 // edge collapse
-int min(int a, int b) {
-  if (a <= b) {
-    return a;
-  } else {
-    return b;
-  }
-}
-
 int edge_collapse(edge *e, vertex **vertices, int *vertex_nb, edge **edges,
                   int *edge_nb, face **faces, int *face_nb) {
   int cond2 = cond_edge_collapse_boundary(e, *vertex_nb);

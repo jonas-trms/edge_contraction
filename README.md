@@ -32,10 +32,16 @@ The implementation is still being worked on, operations on vertex positions not 
 The execution is quite slow and could be accelerated using heuristics. Nevertheless, this algorithm has the advantage of preserving the topological details of the mesh. Its global error isn't very good yet, because of the unimplemented operations.
 
  ## Compilation
- You can compile with GCC by running the following commands:
+ You'll need [OpenBLAS](https://www.openblas.net/) and [LAPACKE](https://www.netlib.org/lapack/lapacke.html), which you can install on Linux by running:
+ ```
+$ sudo apt update
+$ sudo apt install libopenblas-dev liblapacke-dev
 ```
-$ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm
-$ gcc -o error src/energy_standalone.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/vertex_operations.c src/remove_operations.c -lm
+
+You can then compile with `gcc` by running the following commands:
+```
+$ gcc -o edge_contraction src/main.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out.c src/linked_lists.c src/remove_operations.c -lm -llapacke -lopenblas
+$ gcc -o error src/energy_standalone.c src/access_operations.c src/comparison.c src/condition_tests.c src/edge_operations.c src/in-out_energy.c src/linked_lists.c src/vertex_operations.c src/remove_operations.c -lm -llapacke -lopenblas
 ```
 
 ## Usage
@@ -94,6 +100,6 @@ f 2 6 7
 f 2 3 7
 ```
 ## Attributions
-The library [Matrix_hub](https://github.com/Amoiensis/Matrix_hub) is used in this project, under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+The library [OpenBLAS](https://www.netlib.org/blas/) is used under [this license](https://github.com/xianyi/OpenBLAS/blob/develop/LICENSE) and the library [LAPACKE](https://www.netlib.org/lapack/lapacke.html) is used under [this license](https://github.com/Reference-LAPACK/lapack/blob/master/LICENSE).
 
 The images of the edge operations come from [_Mesh optimization_](https://doi.org/10.1145/166117.166119).

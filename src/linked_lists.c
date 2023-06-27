@@ -5,6 +5,14 @@
 
 #include "linked_lists.h"
 
+int min(int a, int b) {
+  if (a <= b) {
+    return a;
+  } else {
+    return b;
+  }
+}
+
 // linked lists
 // creation
 vertex_chain *new_vchain(void) {

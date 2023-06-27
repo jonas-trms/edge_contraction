@@ -4,6 +4,8 @@
 #include "data_structures.h"
 #include "comparison.h"
 
+int min(int a, int b);
+
 // creation
 vertex_chain *new_vchain(void);
 edge_chain *new_echain(void);

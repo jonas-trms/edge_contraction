@@ -7,6 +7,7 @@
 
 // in-out
 // import functions
+
 int import_edge(vertex *a, vertex *b, edge **edges, int e_size, int *edge_nb,
                 face *f) {
   vertex *vmin;
@@ -59,7 +60,7 @@ int import_edge(vertex *a, vertex *b, edge **edges, int e_size, int *edge_nb,
   return j;
 }
 
-void import(FILE *input, vertex **vertices, int vertex_nb, edge **edges,
+void import(FILE *input, double *original_vertices, vertex **vertices, int vertex_nb, edge **edges,
             int *edge_nb, int e_size, face **faces, int face_nb) {
   *edge_nb = 0;
 
@@ -72,6 +73,10 @@ void import(FILE *input, vertex **vertices, int vertex_nb, edge **edges,
     vertices[i]->edges = new_echain();
     fscanf(input, "v %lf %lf %lf\n", &(vertices[i]->x), &(vertices[i]->y),
            &(vertices[i]->z));
+
+    original_vertices[3*i] = vertices[i]->x;
+    original_vertices[3*i + 1] = vertices[i]->y;
+    original_vertices[3*i + 2] = vertices[i]->z;
   }
 
   // imports faces
@@ -103,6 +108,45 @@ void import(FILE *input, vertex **vertices, int vertex_nb, edge **edges,
     import_edge(faces[i]->a, faces[i]->b, edges, e_size, edge_nb, faces[i]);
     import_edge(faces[i]->a, faces[i]->c, edges, e_size, edge_nb, faces[i]);
     import_edge(faces[i]->b, faces[i]->c, edges, e_size, edge_nb, faces[i]);
+  }
+}
+
+// copy functions
+void copy_object(vertex **vertices, int *vertex_nb, int *edge_nb, face **faces,
+                 int *face_nb, vertex **v_dest, int *vertex_nb_dest,
+                 edge **e_dest, int e_size_copy, int *edge_nb_dest,
+                 face **f_dest, int *face_nb_dest) {
+  *vertex_nb_dest = *vertex_nb;
+  *edge_nb_dest = 0;
+  *face_nb_dest = *face_nb;
+
+  for (int i = 0; i < *vertex_nb; i++) {
+    v_dest[i] = malloc(sizeof(vertex));
+    v_dest[i]->x = vertices[i]->x;
+    v_dest[i]->y = vertices[i]->y;
+    v_dest[i]->z = vertices[i]->z;
+    v_dest[i]->id = vertices[i]->id;
+    v_dest[i]->ind = vertices[i]->ind;
+    v_dest[i]->edges = new_echain();
+  }
+
+  for (int i = 0; i < *face_nb; i++) {
+    f_dest[i] = malloc(sizeof(vertex));
+    f_dest[i]->id = faces[i]->id;
+    f_dest[i]->ind = faces[i]->ind;
+
+    f_dest[i]->a = v_dest[(faces[i]->a)->ind];
+    f_dest[i]->b = v_dest[(faces[i]->b)->ind];
+    f_dest[i]->c = v_dest[(faces[i]->c)->ind];
+
+    f_dest[i]->edges = new_echain();
+
+    import_edge(f_dest[i]->a, f_dest[i]->b, e_dest, e_size_copy, edge_nb_dest,
+                f_dest[i]);
+    import_edge(f_dest[i]->a, f_dest[i]->c, e_dest, e_size_copy, edge_nb_dest,
+                f_dest[i]);
+    import_edge(f_dest[i]->b, f_dest[i]->c, e_dest, e_size_copy, edge_nb_dest,
+                f_dest[i]);
   }
 }
 

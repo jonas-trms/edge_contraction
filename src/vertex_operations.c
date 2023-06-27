@@ -3,243 +3,181 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <cblas.h>
+#include <lapacke.h>
+
 #include "vertex_operations.h"
-#include "matrix.h"
-
-// basic operations on static vertices (seen as vectors)
-void coord_copy(vertex_static *v1, vertex_static *v2){
-  //copies the coords of v1 to v2
-  if (v1 == NULL || v2 == NULL){
-    printf("Error coord_copy : NULL vector\n");
-  }
-
-  v2->x = v1->x;
-  v2->y = v1->y;
-  v2->z = v1->z;
-}
-
-vertex_static *v_to_static(vertex *v) {
-  vertex_static *res = malloc(sizeof(vertex_static));
-  res->x = v->x;
-  res->y = v->y;
-  res->z = v->z;
-
-  return res;
-}
-
-vertex_static *sum_v(vertex_static *v1, vertex_static *v2) {
-  // v1 + v2
-  vertex_static *res = malloc(sizeof(vertex_static));
-  res->x = v1->x + v2->x;
-  res->y = v1->y + v2->y;
-  res->z = v1->z + v2->z;
-
-  return res;
-}
-
-vertex_static *substraction_v(vertex_static *v1, vertex_static *v2) {
-  // v1 - v2
-  vertex_static *res = malloc(sizeof(vertex_static));
-  res->x = v1->x - v2->x;
-  res->y = v1->y - v2->y;
-  res->z = v1->z - v2->z;
-
-  return res;
-}
-
-vertex_static *scalar_v(double k, vertex_static *v1) {
-  // k * v
-  vertex_static *res = malloc(sizeof(vertex_static));
-  res->x = k * v1->x;
-  res->y = k * v1->y;
-  res->z = k * v1->z;
-
-  return res;
-}
-
-double dot(vertex_static *v1, vertex_static *v2) {
-  return (v1->x) * (v2->x) + (v1->y) * (v2->y) + (v1->z) * (v2->z);
-}
-
-//closest point on a face to a point
-vertex_static *closest_point_face(vertex_static *p, vertex_static *a,
-                                  vertex_static *b, vertex_static *c) {
-  vertex_static *ab = substraction_v(b, a);
-  vertex_static *ac = substraction_v(c, a);
-  vertex_static *ap = substraction_v(p, a);
-
-  double d1 = dot(ab, ap);
-  double d2 = dot(ac, ap);
-  if (d1 <= 0.f && d2 <= 0.f) {
-    free(ab);
-    free(ac);
-    free(ap);
-    return a;
-  } // #1
-
-  vertex_static *bp = substraction_v(p, b);
-  double d3 = dot(ab, bp);
-  double d4 = dot(ac, bp);
-  if (d3 >= 0.f && d4 <= d3) {
-    free(ab);
-    free(ac);
-    free(ap);
-    free(bp);
-    return b;
-  } // #2
-
-  vertex_static *cp = substraction_v(p, c);
-  double d5 = dot(ab, cp);
-  double d6 = dot(ac, cp);
-
-  if (d6 >= 0.f && d5 <= d6) {
-    free(ab);
-    free(ac);
-    free(ap);
-    free(bp);
-    free(cp);
-    return c;
-  } // #3
-
-  double vc = d1 * d4 - d3 * d2;
-  if (vc <= 0.f && d1 >= 0.f && d3 <= 0.f) {
-    double v = d1 / (d1 - d3);
-    vertex_static *tmp = scalar_v(v, ab);
-    vertex_static *res = sum_v(a, tmp);
-    free(tmp);
-    free(ab);
-    free(ac);
-    free(ap);
-    free(bp);
-    free(cp);
-    return res; // #4
-  }
-
-  double vb = d5 * d2 - d1 * d6;
-  if (vb <= 0.f && d2 >= 0.f && d6 <= 0.f) {
-    const float v = d2 / (d2 - d6);
-    vertex_static *tmp = scalar_v(v, ac);
-    vertex_static *res = sum_v(a, tmp);
-    free(tmp);
-    free(ab);
-    free(ac);
-    free(ap);
-    free(bp);
-    free(cp);
-    return res; // #5
-  }
-
-  double va = d3 * d6 - d5 * d4;
-  if (va <= 0.f && (d4 - d3) >= 0.f && (d5 - d6) >= 0.f) {
-    const float v = (d4 - d3) / ((d4 - d3) + (d5 - d6));
-    vertex_static *cb = substraction_v(c, b);
-    vertex_static *tmp = scalar_v(v, cb);
-    vertex_static *res = sum_v(b, tmp);
-    free(cb);
-    free(tmp);
-    free(ab);
-    free(ac);
-    free(ap);
-    free(bp);
-    free(cp);
-    return res; // #6
-  }
-
-  double denom = 1.f / (va + vb + vc);
-  double v = vb * denom;
-  double w = vc * denom;
-  vertex_static *tmp1 = scalar_v(v, ab);
-  vertex_static *tmp2 = scalar_v(w, ac);
-  vertex_static *tmp3 = sum_v(tmp1, tmp2);
-  vertex_static *res = sum_v(a, tmp3);
-  free(ab);
-  free(ac);
-  free(ap);
-  free(bp);
-  free(cp);
-  free(tmp1);
-  free(tmp2);
-  free(tmp3);
-  return res; // #0
-}
-
-
-//barycentric coordinates of a point in a triangle
-void barycentric_calc(vertex_static *p, vertex_static *a, vertex_static *b, vertex_static *c, int *k_a, int *k_b, int *k_c){
-  //p = k_a*a + k_b*b + k_c*c
-  //the function modifies k_a, k_b and k_c
-  
-  MATRIX_TYPE tab_abc[9] = {a->x, a->y, a->z, 
-                                  b->x, b->y, b->z,
-                                  c->x, c->y, c->z};
-  Matrix *mat_abc = Matrix_gen(3, 3, tab_abc);
-
-  Matrix *mat_abc_inverse = M_Inverse(mat_abc);
-  M_free(mat_abc);
-
-  MATRIX_TYPE tab_p[3] = {p->x, p->y, p->z};
-  Matrix *mat_p = Matrix_gen(3, 1, tab_p);
-
-  Matrix *res = M_mul(mat_abc_inverse, mat_p);
-  M_free(mat_abc_inverse);
-  M_free(mat_p);
-
-  *k_a = (res->data)[0];
-  *k_b = (res->data)[1];
-  *k_c = (res->data)[2];
-
-  M_free(res);
-}
-
-//square distances calculations
-double square_dist_v(vertex_static *v1, vertex_static *v2) {
-  vertex_static *v1v2 = substraction_v(v2, v1);
-
-  double dist = dot(v1v2, v1v2);
-
-  free(v1v2);
-  return dist;
-}
-
-double square_dist_v_f(vertex_static *v, face *f, vertex_static *p_copy) {
-  vertex_static *a = v_to_static(f->a);
-  vertex_static *b = v_to_static(f->b);
-  vertex_static *c = v_to_static(f->c);
-
-  vertex_static *p = closest_point_face(v, a, b, c);
-  if (p_copy != NULL){
-    coord_copy(p, p_copy);
-  }
-
-  double dist = square_dist_v(v, p);
-
-  if (a != p && b != p && c != p) {
-    free(p);
-  }
-  free(a);
-  free(b);
-  free(c);
-
-  return dist;
-}
 
 //projection subproblem
-void projection(vertex_static **original_vertices, int original_size, vertex_static *barycenters,
+void project_points(double *original_vertices, int original_size, barycenter_node *barycenters,
 face **faces, int face_nb){
-  vertex_static v_tmp;
   for (int i = 0; i < original_size; i++) {
-    double dist_curr = square_dist_v_f(original_vertices[i], faces[0], &barycenters[i]);
+    //finds closest point on mesh by projecting on all faces
+    double v_closest[3];
+    double v_tmp[3];
+    int face_closest = 0;
+    double dist_curr = square_dist_v_f(&original_vertices[i*3], faces[0], v_closest);
 
     for (int j = 1; j < face_nb; j++) {
-      double tmp = square_dist_v_f(original_vertices[i], faces[j], &v_tmp);
+      double dist_tmp = square_dist_v_f(&original_vertices[i], faces[j], v_tmp);
 
-      if (tmp < dist_curr) {
-        dist_curr = tmp;
-        coord_copy(&v_tmp, &barycenters[i]);
+      if (dist_tmp < dist_curr) {
+        dist_curr = dist_tmp;
+        face_closest = j;
+        cblas_dcopy(3, v_tmp, 1, v_closest, 1);
+      }
+    }
+
+    //computes and sets barycenters
+    face *f = faces[face_closest];
+    barycenters[i].a = (f->a)->ind;
+    barycenters[i].b = (f->b)->ind;
+    barycenters[i].c = (f->c)->ind;
+
+    double a[3] = {(f->a)->x, (f->a)->y, (f->a)->z};
+    double b[3] = {(f->b)->x, (f->b)->y, (f->b)->z};
+    double c[3] = {(f->c)->x, (f->c)->y, (f->c)->z};
+
+    barycentric_calc(v_closest, a, b, c, &barycenters[i].k_a, &barycenters[i].k_b, &barycenters[i].k_c);
+  }
+}
+
+//linear least squares subproblem
+void improve_vertex_positions(double *original_vertices, int original_size, barycenter_node *barycenters,
+vertex **vertices, int vertex_nb, edge **edges, int edge_nb, int k){
+  //inits d_1
+  double *d_1 = malloc(sizeof(double) * ((original_size + edge_nb) * 3));
+  for (int i=0; i<original_size; i++){
+    d_1[i] = original_vertices[i*3];
+  }
+  for (int i=0; i<edge_nb; i++){
+    d_1[original_size + i] = 0.;
+  }
+
+  for (int i=0; i<original_size; i++){
+    d_1[(original_size + edge_nb) + i] = original_vertices[i*3 + 1];
+  }
+  for (int i=0; i<edge_nb; i++){
+    d_1[(original_size + edge_nb) + original_size + i] = 0.;
+  }
+
+  for (int i=0; i<original_size; i++){
+    d_1[2*(original_size + edge_nb) + i] = original_vertices[i*3 + 2];
+  }
+  for (int i=0; i<edge_nb; i++){
+    d_1[2*(original_size + edge_nb) + original_size + i] = 0.;
+  }
+
+  //inits mat_A
+  double *mat_A = malloc(sizeof(double) * (vertex_nb * (original_size + edge_nb)));
+
+  //barycenters
+  for (int i=0; i<original_size; i++){
+    for (int j=0; j<vertex_nb; j++){
+      //index of b.i.j in mat_A (barycentric coordinate of i on j)
+      if (barycenters[i].a != vertices[barycenters[i].a]->ind){
+        printf("Error : construction\n");
+      }
+
+      if (barycenters[i].b != vertices[barycenters[i].b]->ind){
+        printf("Error : construction\n");
+      }
+
+      if (barycenters[i].c != vertices[barycenters[i].c]->ind){
+        printf("Error : construction\n");
+      }
+
+      int mat_ind = (j * (original_size + edge_nb)) + i;
+
+      if (barycenters[i].a == vertices[j]->ind){
+        mat_A[mat_ind] = barycenters[i].k_a;
+      }
+
+      else if (barycenters[i].b == vertices[j]->ind){
+        mat_A[mat_ind] = barycenters[i].k_b;
+      }
+
+      else if (barycenters[i].c == vertices[j]->ind){
+        mat_A[mat_ind] = barycenters[i].k_c;
+      }
+
+      else{
+        mat_A[mat_ind] = 0.0;
       }
     }
   }
+
+  //edges
+  int k_root = sqrt(k);
+
+  for (int i=0; i<edge_nb; i++){
+    for (int j=0; j<vertex_nb; j++){
+      //index of e.i.j in mat_A (coordinate of edges[i] on j)
+      int mat_ind = (j * (original_size + edge_nb)) + i + original_size;
+
+      if ((edges[i]->a)->ind == vertices[j]->ind){
+        mat_A[mat_ind] = k_root;
+      }
+
+      else if ((edges[i]->b)->ind == vertices[j]->ind){
+        mat_A[mat_ind] = -k_root;
+      }
+
+      else{
+        mat_A[mat_ind] = 0.0;
+      }
+    }
+  }
+  
+  FILE *output = fopen("d_1.txt", "w");
+
+  for (int i=0; i<(original_size + edge_nb); i++){
+      fprintf(output, "%+12.8f ", d_1[i]);
+      fprintf(output, "%+12.8f ", d_1[(original_size + edge_nb) + i]);
+      fprintf(output, "%+12.8f\n", d_1[2*(original_size + edge_nb) + i]);
+    }
+
+  fclose(output);
+
+  output = fopen("mat_A.txt", "w");
+
+  for (int i=0; i<(original_size + edge_nb); i++){
+    for (int j=0; j<vertex_nb; j++){
+      int mat_ind = (j * (original_size + edge_nb)) + i;
+      fprintf(output, "%+12.8f ", mat_A[mat_ind]);
+    }
+    fprintf(output, "\n");
+  }
+
+  fclose(output); 
+
+  //solves the linear least squares problem
+  double *s = malloc(sizeof(double) * min(vertex_nb, (original_size + edge_nb)));
+  lapack_int rank;
+
+  lapack_int info = LAPACKE_dgelss(LAPACK_COL_MAJOR, (original_size + edge_nb), vertex_nb, 3, mat_A, (original_size + edge_nb), d_1, (original_size + edge_nb), s, -1., &rank);
+  free(s);
+  
+  if (info != 0){
+    printf("Error linear_least_squares_x : %d\n", info);
+  }
+
+  if ((original_size + edge_nb) < vertex_nb){
+    printf("Error : m > n + e\n");
+  }
+
+  for (int i=0; i<vertex_nb; i++){
+    vertices[i]->x = d_1[i];
+  }
+
+  for (int i=0; i<vertex_nb; i++){
+    vertices[i]->y = d_1[(original_size + edge_nb) + i];
+  }
+
+  for (int i=0; i<vertex_nb; i++){
+    vertices[i]->z = d_1[2*(original_size + edge_nb) + i];
+  }
+
+  free(d_1);
+  free(mat_A);
 }
-
-int main(void){}
-

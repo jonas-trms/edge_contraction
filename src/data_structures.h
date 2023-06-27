@@ -1,14 +1,26 @@
 #ifndef DATA_STRUCTURES
 #define DATA_STRUCTURES
 
-// original mesh
+/* // original mesh
 struct vertex_static {
   double x;
   double y;
   double z;
+}; 
+
+typedef struct vertex_static vertex_static;*/
+
+//barycenters
+struct barycenter_node {
+  int a;
+  int b;
+  int c;
+  double k_a;
+  double k_b;
+  double k_c;
 };
 
-typedef struct vertex_static vertex_static;
+typedef struct barycenter_node barycenter_node;
 
 // intern mesh
 struct vertex;
